@@ -1,6 +1,6 @@
 # select-gpt
 
-asdss
+Chat Bot chrome extension Frontend
 
 ## Usage
 
