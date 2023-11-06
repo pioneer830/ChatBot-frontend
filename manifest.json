@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "name": "Prospect Pal",
+    "description": "A chrome extension",
+    "version": "1.0.0",
+    "host_permissions": ["https://*.openai.com/"],
+    "permissions": ["storage", "tabs"],
+    "icons": {
+        "512": "assets/icons/hexagonal.png",
+        "513": "assets/icons/reset.png",
+        "514": "assets/icons/arrowBottom.png",
+        "515": "assets/icons/close.png"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*"],
+            "css": ["css/contentScript.css"],
+            "js": ["env.js", "contentScript.js"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+          "resources": ["popup.html", "assets/icons/hexagonal.png", "assets/icons/reset.png", "assets/icons/arrowBottom.png", "assets/icons/close.png" ],
+          "matches": ["https://*/*", "http://*/*"]
+        }
+      ]
+}

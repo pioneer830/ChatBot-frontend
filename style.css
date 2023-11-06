@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,500;1,300;1,400&display=swap');
+
+body {
+    background: #eef1f5;
+    font-family: 'Mulish', sans-serif;
+    width: 400px;
+    height: 400px;
+    font-size: 10px;
+}
+
+
+textarea {
+    width: 88%;
+    margin: 0.2vw;
+}
+
+textarea:focus {
+    /*
+    border: 2px solid #3270C5 !important;
+    */
+    outline: none;
+
+}
+
+.root {
+    /*
+    box-shadow: 0 8px 16px #919eab29;
+    */
+}
+
+.editable {
+    font-family: 'Mulish', sans-serif;
+    resize: none;
+    background-color: white;
+    color: black;
+    border-width: 1px;
+    border-color: black;
+    font-size: 3.75vh;
+    width: 94vw;
+    border-radius: 2px;
+    padding: 1vw;
+    overflow-y: scroll;
+}
+
+.characterCss {
+    font-family: roboto;
+    resize: none;
+    background-color: #454754;
+    color: #D1D5CA;
+    font-size: 3.75vh;
+    width: 94vw;
+    border: 0px;
+    border-radius: 2px;
+    padding: 1vw;
+    overflow-y: scroll;
+}
+
+.intentionsCss, .tonesCss {
+    background: #454754;
+    color: #D1D5CA;
+    width: 100%;
+    border: none;
+    font-family: roboto;
+    font-size: 3.75vh;
+    padding: 1vw;
+    overflow-y: scroll;
+}
+
+h2 {
+    margin-bottom: 0px !important;
+}
+
+.intentionsCss {
+    margin-bottom: 15px;
+}
+
+.editable:empty:before {
+    content: attr(placeholder);
+    opacity: 0.5
+}
+
+.editable::-webkit-scrollbar {
+    width: 0 !important
+}
+
+#input {
+    padding: 1vw;
+    height: 60px
+}
+
+#output {
+    padding: 1vw;
+    height: 250px;
+}
+
+a {
+    text-decoration: none;
+    color: #16e16e;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+.btn {
+    font-family: roboto;
+    width: 60px;
+    height: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+.tag-btn {
+    background: #eef1f5;
+    padding: 5px 5px;
+    color: #497bca;
+    border-width: 1px;
+    border-color: #559EED;
+}
+
+.tag-btn.selected {
+    background: #497bca;
+    color: white;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.align_items_center {
+    align-items: center;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 5px !important;
+}
+
+.close {
+    float: right;
+    opacity: 0.5;
+    margin-top: 10px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.actionButton {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 0 10%;
+}
+
+
+.copy-btn, .script-copy-btn {
+    float: right;
+    opacity: 0.5;
+    cursor: pointer;
+    top: 40px;
+    right: 8px;
+}
+
+.check-btn, .script-check-btn {
+    float: right;
+    opacity: 0.5;
+    cursor: pointer;
+    position: relative;
+    top: 40px;
+    right: 8px;
+    display: none;
+}
+
+.script-update-area {
+    display: none;
+}
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.update-chat-button {
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #3e8e41;
+}
+
+.button:active {
+    background-color: #1e4f21;
+}
+
+.response-area {
+    width: 100%;
+    margin: 5px;
+}
+

@@ -1,0 +1,211 @@
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active, .tab button:focus {
+    background-color: #FFFFFF;
+    font-weight: bolder;
+    outline: none;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    /*border: 1px solid #ccc;*/
+    border-top: none;
+}
+
+#chatHolder {
+    margin: 0 auto;
+    overflow: auto;
+    height: calc(100% - 150px);
+}
+
+
+#inputWrapper {
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin: 0 auto;
+    border-top: 1px solid #EEE;
+}
+
+.chat ul {
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.chat .chat-messages {
+    padding: 5px 20px;
+}
+
+.chat .chat-messages .message-data {
+    margin-bottom: 15px;
+}
+
+.chat .chat-messages .message-data-time {
+    color: #a8aab1;
+    padding-left: 6px;
+    font: italic;
+}
+
+.chat .chat-messages .message-data-name {
+    color: silver;
+    font-size: 20px;
+}
+
+.chat .chat-messages .message {
+    padding: 18px 20px;
+    line-height: 26px;
+    font-size: 16px;
+    border-radius: 7px;
+    margin-bottom: 30px;
+    position: relative;
+    width: fit-content;
+}
+
+.chat .chat-messages .my-message {
+    background: #E5E5E5;
+    color: black;
+}
+
+.chat .chat-messages .other-message {
+    background: #12B7F5;
+    color: white;
+}
+
+.chat .chat-message {
+    padding: 30px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.float-right {
+    float: right;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(255, 0, 0, 0.4);
+}
+
+/*more styles*/
+
+#highlight, #output, #scripttypeanswer {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    transition: all 0.3s, height 0s;
+    resize: vertical;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: unset !important;
+    padding: 8px 12px;
+    outline: 0;
+    font-size: 14px;
+    color: #212b36;
+    background-color: #FFFFFF;
+    white-space: pre-wrap;
+}
+ #chatUpdateScript {
+    display: inline-block;
+    max-width: 75%;
+    margin-top: 5px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #212b36;
+    padding: 5px 5px;
+}
+
+/*chat input button*/
+
+
+
+#output {
+    min-height: 100px !important;
+    margin-top: 10px !important;
+    position: initial;
+    padding-left: 25px;
+}
+
+#chatUpdatecript {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#output, #scripttypeanswer {
+    min-height: 100px !important;
+    display: inline-block;
+    width: 100%;
+}
+
+.header-link.link-btn {
+    background: #497bca;
+    color: white;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-width: 1px;
+    border-color: #559EED;
+    border-radius: 0.375rem;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.icon-btn {
+    margin-left: 10px;
+}
+

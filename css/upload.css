@@ -1,0 +1,27 @@
+.upload-file-area{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#img-validate-msg {
+    color: red;
+    font-weight: bold;
+}
+
+.upload-file-area .img-text{
+    border: gray solid 1px;
+    overflow: auto;
+    border-radius: 4px;
+}
+
+.clear-btn{
+    width: 100%;
+    text-align: right;
+    padding-right: 12%;
+}
+
+.clear-btn button{
+    color: blue;
+    text-decoration: underline;
+    background: transparent;
+}

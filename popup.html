@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--head tag-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prospect Pal</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/moment.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/output.css">
+    <link rel="stylesheet" type="text/css" href="css/chat.css">
+    <link rel="stylesheet" type="text/css" href="css/upload.css">
+    <script id="question-template" type="text/x-handlebars-template">
+        <li class="clearfix">
+            <div class="message-data align-right">
+                <span class="message-data-time"><i>{{time}}</i></span>
+                <span class="message-data-name">&nbsp;{{from}}</span>
+            </div>
+            <div class="message other-message float-right">
+                {{message}}
+            </div>
+        </li>
+    </script>
+
+    <script id="answer-template" type="text/x-handlebars-template">
+        <li>
+            <div class="message-data">
+                <span class="message-data-name">{{from}}</span>
+                <span class="message-data-time"><i>{{time}}</i></span>
+            </div>
+            <div class="message my-message">
+                {{message}}
+            </div>
+        </li>
+    </script>
+</head>
+
+<body>
+<div class="root">
+    <div id="prospect_frame_resize_bar"></div>
+    <!-- <div class="close">
+        <svg width="18" height="18" fill="none" viewBox="0 0 18 18" id="closeButton">
+            <g>
+                <path data-follow-fill="currentColor"
+                      d="m10.052 8.996 3.221-3.214a.752.752 0 0 0-1.063-1.064L8.996 7.94 5.783 4.72a.752.752 0 1 0-1.064 1.063L7.94 8.996l-3.22 3.213a.75.75 0 0 0 0 1.064.75.75 0 0 0 1.063 0l3.213-3.221 3.214 3.22a.749.749 0 0 0 1.063 0 .75.75 0 0 0 0-1.063l-3.22-3.213Z"
+                      fill="currentColor"></path>
+            </g>
+        </svg>
+    </div> -->
+
+    <!--logo-->
+    <div class="header-layout align_items_center mb-10">
+        <img src="assets/icons/fav.png" width="170" height="80"/>
+        <button class="header-link link-btn go-register" id="prospect_frame_register_link">Register</button>
+        <button class="hidden header-link link-btn go-upgrade" id="prospect_frame_subscribe_link">Upgrade</button>
+        <!-- My Account button-->
+        <button class="hidden header-link link-btn go-home" id="prospect_frame_myaccount_link">My Account</button>
+        <!-- It looks like the button below is the account button, but I added my own button above.-->
+        <!-- <button class="hidden header-link icon-btn go-home" id="prospect_frame_account_link">
+            <svg fill="#497bca" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                 viewBox="0 0 488.189 488.189" xml:space="preserve">
+                    <g>
+                        <g>
+                            <path d="M326.9,67.166c6.7-14.5,13.5-28.9,20.6-44.2c-78.6-33.1-155.2-31.5-228.4,12.1C48.3,77.166,9.9,141.166,0,223.566
+                                c16.8,1.5,32.7,2.9,48.6,4.2C57.3,103.266,194.9,7.766,326.9,67.166z"/>
+                            <path d="M484.7,202.466c-15.8,2.7-31.5,5.5-47.9,8.3c8.5,57-3.3,108.4-38.1,153.4c-34.6,44.8-81,69.4-137.7,75.7
+                                c1.4,16.1,2.8,31.8,4.1,47.5C383.8,483.166,511,363.966,484.7,202.466z"/>
+                            <path d="M47.9,262.066c-15.1,1.3-30.8,2.7-46.5,4c3.7,99.5,90.5,211.5,221.4,222.1c1.4-16.1,2.8-31.9,4.1-47.2
+                                C124.5,423.866,65.2,364.566,47.9,262.066z"/>
+                            <path d="M398.9,125.566c12.2,15.8,21.6,33.2,28.9,52.4c15.2-5.5,30.2-11,45.9-16.7c-18.1-48.2-47.6-86.6-89.5-116.7
+                                c-9.3,13.3-18.5,26.3-28,39.9C372.4,96.366,386.8,109.866,398.9,125.566z"/>
+                            <path d="M267.2,384.166v-19.1c16.3-3.1,32.1-9.6,46.3-19.4l13.6,13.6c5.1,5,13.2,5,18.3,0l14.1-14.1c5-5.1,5-13.2,0-18.3
+                                l-13.8-13.8c9.6-14.2,15.9-30,18.9-46.2h19.6c7.1,0,12.9-5.8,12.9-12.9v-20c0-7.1-5.8-12.9-12.9-12.9h-19.7
+                                c-3.1-16.2-9.5-31.8-19.1-45.9l14-14c5-5.1,5-13.2,0-18.3l-14.3-14.2c-5.1-5-13.2-5-18.3,0l-14,14c-14.1-9.6-29.8-16-46-19.1
+                                v-19.7c0-7.1-5.8-12.9-12.9-12.9h-20c-7.1,0-12.9,5.8-12.9,12.9v19.6c-16.2,3-32,9.4-46.2,19l-13.7-13.6c-5.1-5-13.2-5-18.3,0
+                                l-14.1,14.2c-5,5.1-5,13.2,0,18.3l13.6,13.6c-9.8,14.2-16.2,30-19.3,46.3h-19.1c-7.1,0-12.9,5.8-12.9,12.9v20
+                                c0,7.1,5.8,12.9,12.9,12.9h19c3.1,16.4,9.5,32.3,19.2,46.5l-13.2,13.5c-5,5.1-5,13.2,0,18.3l14.1,14.1c5.1,5,13.2,5,18.3,0
+                                l13.4-13.4c14.3,9.7,30.2,16.1,46.6,19.2v19c0,7.1,5.8,12.9,12.9,12.9h20C261.4,397.066,267.2,391.266,267.2,384.166z
+                                 M197,291.266c-26-26-26.1-68.2-0.1-94.2s68.2-26.1,94.2-0.1s26.1,68.2,0.1,94.2C265.3,317.166,223.1,317.266,197,291.266z"/>
+                        </g>
+                    </g>
+            </svg>
+        </button> -->
+    </div>
+
+    <!--tab selector-->
+    <div class="tab">
+        <!--tabs declaration-->
+        <button class="tablinks active" data-name="Response">Response</button>
+        <button class="tablinks hidden" id="prospect_frame_script_tab" data-name="Script">Script</button>
+    </div>
+
+    <!--response tab-->
+    <div id="Response" class="tabcontent" style="display: block;">
+        <!--selected text-->
+
+        <div>
+            <h3 class="mb-10 font-medium text-sm">Selected Query:</h3>
+            <textarea id="highlight" placeholder="Selected Text to be responded to" disabled></textarea>
+        </div>
+
+        <div id="pro-image-area">
+
+        </div>
+        <!--tone-->
+        <div class="mt-2">
+            <h4 class="mb-10 font-medium text-sm"> Select Response Tones:</h4>
+            <div id="render-tone-btns" class="flex-row flex-wrap mt-2 mb-4 font-semibold"></div>
+
+            <select class="tones tonesCss hide" name="tones" id="tones" multiple="multiple"></select>
+
+        </div>
+        <!--character length-->
+        <div class="mt-3">
+            <h4 class="mb-10 font-medium text-sm">Characters Length:</h4>
+            <div class="flex-row flex-wrap mt-2 font-semibold">
+                <button class="ml-4 cursor-pointer tag-btn char-btn rounded-md">Any amount of characters</button>
+                <button class="ml-4 cursor-pointer tag-btn char-btn default selected rounded-md">Short</button>
+                <button class="ml-4 cursor-pointer tag-btn char-btn rounded-md">Medium</button>
+                <button class="ml-4 cursor-pointer tag-btn char-btn rounded-md">Long</button>
+            </div>
+            <select class="intentionsCss hide" name="charlimit" id="charlimit">
+                <option value="Any amount of characters">Any amount of characters</option>
+                <option class="default" value="160 or less" selected>Short</option>
+                <option value="320 or less">Medium</option>
+                <option value="over 320">Long</option>
+            </select>
+        </div>
+
+        <!--intention selector-->
+
+        <div class="mt-3">
+            <h4 class="mb-10 font-medium text-sm"> Select your Intentions:</h4>
+            <div id="render-intention" class="flex-row flex-wrap mt-2 font-semibold">
+            </div>
+            <select class="intentionsCss hide" name="intentions" id="intentions">
+            </select>
+
+        </div>
+
+        <!--message type-->
+
+        <div class="mt-2">
+            <h4 class="mb-10 font-medium text-sm">Messaging type:</h4>
+            <div class="flex-row font-semibold mt-2">
+                <button class="ml-4 cursor-pointer tag-btn message-btn selected default rounded-md">Text</button>
+                <button class="ml-4 cursor-pointer tag-btn message-btn rounded-md">Email</button>
+            </div>
+            <select class="intentionsCss hide" name="messagetype" id="messagetype">
+                <option class="default" value="text">Text</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+
+        <!--response type-->
+        <div class="mt-2">
+            <h4 class="mb-10 font-medium text-sm">Response type:</h4>
+            <div class="flex-row mt-2 font-semibold">
+                <button class="ml-4 cursor-pointer tag-btn response-type-btn default selected rounded-md">Question
+                </button>
+                <button class="ml-4 cursor-pointer tag-btn response-type-btn rounded-md">Statement</button>
+            </div>
+            <select class="intentionsCss hide" name="responsetype" id="responsetype">
+                <option class="default" value="question">Question</option>
+                <option value="statement">Statement</option>
+            </select>
+        </div>
+
+        <!--Fetch user data and set here-->
+        <input type="hidden" id="user_name">
+        <input type="hidden" id="job_title">
+        <input type="hidden" id="industry">
+        <input type="hidden" id="job_description">
+        <input type="hidden" id="industry_description">
+
+        <!--additional Info-->
+
+        <div class="mt-3">
+            <h4 class="mb-10 font-medium text-sm">Add any Additional info:</h4>
+
+            <div class="relative flex h-full flex-1 items-stretch md:flex-col ">
+                <div class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)]">
+                    <textarea tabindex="0" style="max-height: 200px; height: 24px; font-size: 14px; overflow-y: hidden;"
+                              id="chatInput"
+                              rows="1" placeholder="Type a message..."
+                              class="m-0 w-full resize-none p-0 pr-7 pl-2 md:pl-0"></textarea>
+                    <button disabled="" id="chatSubmit"
+                            class="absolute p-1 rounded-md text-gray-500 bottom-1.5 md:bottom-2.5   disabled:hover:bg-transparent  right-1 md:right-2 disabled:opacity-40">
+                        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" id="svg"
+                             stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1" height="1em"
+                             width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!--
+                        <div id="inputWrapper">
+                            <div class="input-container">
+                                <textarea id="chatInput" placeholder='Type addional context'></textarea>
+                                &lt;!&ndash;
+                                                <input id='chatSubmit' class="change-inputbtn" type="button" value='Generate'></input>
+                                &ndash;&gt;
+                                <span class="update-chat-button" id="chatSubmit">
+             <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.31.666C7.604 3.264.67 6.951.67 6.951l5.584 2.79 2.79 5.581.007.006.004.004S12.922 8.03 15.33.67l-.004-.002h-.006-.004a.01.01 0 0 0-.004-.002zm-1.773 1.793c-1.83 5.004-3.584 8.827-4.494 10.623l-1.72-3.443c1.431-1.543 4.293-5.255 5.511-6.473-1.218 1.218-4.927 4.077-6.47 5.51L2.925 6.959c1.764-.894 5.489-2.602 10.611-4.5z"
+                      style="marker:none" color="#000000" overflow="visible" fill="white"/>
+            </svg>
+            </span>
+
+                            </div>
+
+                        </div>
+            -->
+        </div>
+
+        <!--response-->
+        <div class="input-container mt-2 ">
+            <div class="h-full flex-1 items-stretch md:flex-col relative ">
+                <span class="check-btn" title="Copy to Clipboard">
+                    <i style="font-size:15px" class="fa">&#10003;</i>
+                </span>
+                <span class="copy-btn relative" title="Copy to Clipboard"><span class="feedback-list-eoLsOv"><svg
+                        aria-hidden="true" focusable="false" role="img" viewBox="0 0 16 16" width="14" height="14"
+                        fill="currentColor" style="font-size:15px">
+                            <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                            <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+                        </svg></span></span>
+                <textarea id="output" placeholder="Generated response will appear here" disabled hidden=""
+                          class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)]"></textarea>
+            </div>
+
+            <!--       <span class="update-chat-button reset" id="chatReset">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="16px" height="16px"><path
+                               fill="#8bb7f0"
+                               d="M23.596,2.871v4.444c5.533,1.566,9.589,6.65,9.589,12.684c0,7.282-5.903,13.185-13.185,13.185 S6.815,27.282,6.815,20c0-4.897,2.671-9.168,6.635-11.44l3.05,3.05V2.5H7.39l2.935,2.935C5.614,8.57,2.5,13.916,2.5,20 c0,9.665,7.835,17.5,17.5,17.5S37.5,29.665,37.5,20C37.5,11.568,31.536,4.53,23.596,2.871z"/><path
+                               fill="#4e7ab5"
+                               d="M20,37.986c-9.918,0-17.987-8.068-17.987-17.986c0-5.826,2.813-11.252,7.555-14.634L6.216,2.014 h10.771v10.771l-3.614-3.613C9.619,11.472,7.302,15.587,7.302,20c0,7.002,5.696,12.698,12.698,12.698S32.698,27.002,32.698,20 c0-5.654-3.797-10.678-9.235-12.216l-0.354-0.101V2.272l0.586,0.122C31.976,4.125,37.987,11.529,37.987,20 C37.987,29.918,29.918,37.986,20,37.986z M8.565,2.986l2.524,2.525L10.594,5.84C5.831,9.011,2.987,14.304,2.987,20 c0,9.381,7.632,17.014,17.013,17.014S37.013,29.381,37.013,20c0-7.811-5.403-14.663-12.931-16.52v3.472 c5.665,1.771,9.589,7.083,9.589,13.048c0,7.538-6.133,13.671-13.672,13.671S6.328,27.538,6.328,20 c0-4.885,2.636-9.43,6.88-11.862l0.323-0.186l2.482,2.482V2.986H8.565z"/></svg>
+       </span>-->
+        </div>
+
+        <!--reset chat button-->
+<!--        <div class="h-full flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center reset">-->
+<!--            <button class="btn relative btn-neutral border-0 md:border bg-blue-500 rounded-md" id="chatReset">-->
+<!--                <div class="flex w-full items-center justify-center gap-2">-->
+<!--                    <svg stroke="#ffffff" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"-->
+<!--                         stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"-->
+<!--                         xmlns="http://www.w3.org/2000/svg">-->
+<!--                        <polyline points="1 4 1 10 7 10"></polyline>-->
+<!--                        <polyline points="23 20 23 14 17 14"></polyline>-->
+<!--                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--            </button>-->
+<!--        </div>-->
+
+    </div>
+
+    <!--script tab-->
+    <div id="Script" class="tabcontent">
+
+
+        <!--messaging type section-->
+        <div>
+            <h4 class="mb-10 font-medium text-sm">Messaging type:</h4>
+            <div class="flex-row mt-2 mb-2 font-semibold">
+                <button class="ml-4 cursor-pointer tag-btn scriptmessage-btn default selected rounded-md">Text</button>
+                <button class="ml-4 cursor-pointer tag-btn scriptmessage-btn rounded-md">Email</button>
+            </div>
+            <select class="intentionsCss hide" name="scriptmessagetype" id="scriptmessagetype">
+                <option class="default" value="text" selected>Text</option>
+                <option value="email">Email</option>
+            </select>
+        </div>
+
+
+        <!--length scripts-->
+        <div>
+            <h4 class="mb-10 font-medium text-sm">Character:</h4>
+            <div class="flex-row flex-wrap mt-2 mb-2 font-semibold">
+                <button class="ml-4 cursor-pointer tag-btn scriptchar-btn rounded-md">Auto</button>
+                <button class="ml-4 cursor-pointer tag-btn scriptchar-btn default selected rounded-md">Short</button>
+                <button class="ml-4 cursor-pointer tag-btn scriptchar-btn rounded-md">Medium</button>
+                <button class="ml-4 cursor-pointer tag-btn scriptchar-btn rounded-md">Long</button>
+            </div>
+            <select class="intentionsCss hide" name="scriptcharlimit" id="scriptcharlimit">
+                <option value="auto">Auto</option>
+                <option class="default" value="160 or less">Short</option>
+                <option value="320 or less">Medium</option>
+                <option value="over 320">Long</option>
+            </select>
+        </div>
+
+
+        <div>
+            <h4 class="mb-10 font-medium text-sm">Tones:</h4>
+            <div id="hide-tones" class="flex-row flex-wrap mt-4 mb-2 font-semibold">
+            </div>
+            <select class="tonesCss hide" name="scripttones" id="scripttones" multiple="multiple">
+            </select>
+        </div>
+
+        <!--purpose of the message-->
+        <div>
+            <h4 class="mb-10 font-medium text-sm">Purpose of message:</h4>
+            <div class="flex-row flex-wrap font-semibold">
+                <button class="ml-10 mb-10 cursor-pointer tag-btn scriptpurpose-btn selected default rounded-md">Follow
+                    up
+                </button>
+                <button class="ml-10 mb-10 cursor-pointer tag-btn scriptpurpose-btn rounded-md">Missed appointment
+                </button>
+                <button class="ml-10 mb-10 cursor-pointer tag-btn scriptpurpose-btn rounded-md">Appointment
+                    confirmation
+                </button>
+                <button class="ml-10 mb-10 cursor-pointer tag-btn scriptpurpose-btn rounded-md">Other</button>
+            </div>
+            <div class="hidden purpose-other-box mt-1">
+                <input type="text" id="scriptpurpose-other-title" placeholder="Type a purpose of message..." name="scriptpurpose"/>
+            </div>
+            <select class="tonesCss hide" name="scriptpurpose" id="scriptpurpose" multiple="multiple">
+                <option class="default" value="Follow up" selected>Follow up</option>
+                <option value="Missed appointment">Missed appointment</option>
+                <option value="Appointment confirmation">Appointment confirmation</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div>
+
+            <div id="inputWrapper">
+                <!--            <div class="input-container">
+                      &lt;!&ndash;
+                                          <textarea id="chatInputScript" placeholder='Type addional context'></textarea>
+                      &ndash;&gt;
+
+                      <span class="update-chat-button" id="chatSubmitScript">
+   <svg width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.31.666C7.604 3.264.67 6.951.67 6.951l5.584 2.79 2.79 5.581.007.006.004.004S12.922 8.03 15.33.67l-.004-.002h-.006-.004a.01.01 0 0 0-.004-.002zm-1.773 1.793c-1.83 5.004-3.584 8.827-4.494 10.623l-1.72-3.443c1.431-1.543 4.293-5.255 5.511-6.473-1.218 1.218-4.927 4.077-6.47 5.51L2.925 6.959c1.764-.894 5.489-2.602 10.611-4.5z"
+            style="marker:none" color="#000000" overflow="visible" fill="white"/>
+  </svg>
+  </span>
+  -->
+
+                <div class="mt-3">
+                    <h4 class="mb-10 font-medium text-sm">Add any Additional info:</h4>
+
+                    <div class="relative flex h-full flex-1 items-stretch md:flex-col ">
+                        <div class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)]">
+                    <textarea style="max-height: 200px; height: 24px; font-size: 14px; overflow-y: hidden;"
+                              id="chatInputScript"
+                              rows="1" placeholder="Type a message..."
+                              class="m-0 w-full resize-none p-0 pr-7 pl-2 md:pl-0"></textarea>
+                            <button disabled="" id="chatSubmitScript"
+                                    class="absolute p-1 rounded-md text-gray-500 bottom-1.5 md:bottom-2.5   disabled:hover:bg-transparent  right-1 md:right-2 disabled:opacity-40">
+                                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                                     id="scriptSvg"
+                                     stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1" height="1em"
+                                     width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!--response-->
+                    <div class="input-container mt-2 ">
+                        <div class="h-full flex-1 items-stretch md:flex-col relative ">
+                <span class="check-btn" title="Copy to Clipboard">
+                    <i style="font-size:15px" class="fa">&#10003;</i>
+                </span>
+                            <span class="copy-btn relative" title="Copy to Clipboard"><span
+                                    class="feedback-list-eoLsOv"><svg
+                                    aria-hidden="true" focusable="false" role="img" viewBox="0 0 16 16" width="14"
+                                    height="14"
+                                    fill="currentColor" style="font-size:15px">
+                            <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                            <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+                        </svg></span></span>
+                            <textarea id="scripttypeanswer" placeholder="Generated response will appear here" disabled
+                                      hidden=""
+                                      class="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)]"></textarea>
+                        </div>
+
+                    </div>
+
+                    <!--reset chat button-->
+                    <div class="h-full flex ml-1 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center reset">
+                        <button class="btn relative btn-neutral border-0 md:border bg-blue-500 rounded-md"
+                                id="scriptReset">
+                            <div class="flex w-full items-center justify-center gap-2">
+                                <svg stroke="#ffffff" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round" class="h-4 w-4" height="1em" width="1em"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <polyline points="23 20 23 14 17 14"></polyline>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<script src="env.js"></script>
+<script src='js/parser/ocr.js'></script>
+<script src="js/actions/action.js"></script>
+<script src="js/chat.js"></script>
+<script src="./popup.js"></script>
+<script src="js/requests/isLogin.js"></script>
+<script src="js/main.js"></script>
+<script src="js/requests/user.js"></script>
+<script src="js/requests/tones.js"></script>
+<script src="js/requests/intentions.js"></script>
+<script src="js/requests/tones_intension.js"></script>
+<script src="js/realtime.js"></script>
+</body>
+
+</html>
